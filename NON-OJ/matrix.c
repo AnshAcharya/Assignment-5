@@ -2,13 +2,6 @@
 #include <stdlib.h>
 #include "matrix.h"
 
-typedef struct Matrix // Given
-{
-    int num_rows;
-    int num_cols;
-    long long int **data;
-} Matrix;
-
 Matrix *create_matrix(int r, int c) // Given
 {
     Matrix *m = (Matrix *)malloc(sizeof(Matrix));
@@ -22,7 +15,7 @@ Matrix *create_matrix(int r, int c) // Given
     return m;
 }
 
-// Q1: Code to free all memory used by the matrix stored in m
+// AQ1: Code to free all memory used by the matrix stored in m
 void destroy_matrix(Matrix *m)
 {
     for (int i = 0; i < m->num_rows; i++)
@@ -32,7 +25,7 @@ void destroy_matrix(Matrix *m)
     free(m->data);
 }
 
-// Q2: Code to add the matrices A and B and return a new matrix with the results.
+// AQ2: Code to add the matrices A and B and return a new matrix with the results.
 Matrix *add_matrix(Matrix *A, Matrix *B)
 {
     if (((A->num_rows) != (B->num_rows)) || ((A->num_cols) != (B->num_cols)))
@@ -51,7 +44,7 @@ Matrix *add_matrix(Matrix *A, Matrix *B)
     return R;
 }
 
-// Q3: Code to multiply the matrices A and B and return a new matrix with the results.
+// AQ3: Code to multiply the matrices A and B and return a new matrix with the results.
 Matrix *mult_matrix(Matrix *A, Matrix *B)
 {
     if (A->num_cols != B->num_rows)
@@ -76,7 +69,7 @@ Matrix *mult_matrix(Matrix *A, Matrix *B)
     return R;
 }
 
-// Q4: Code to multiply the matrix A with a scalar s and return a new matrix with the results.
+// AQ4: Code to multiply the matrix A with a scalar s and return a new matrix with the results.
 Matrix *scalar_mult_matrix(long long int s, Matrix *M)
 {
     Matrix *A = create_matrix(M->num_rows, M->num_cols);
@@ -90,7 +83,7 @@ Matrix *scalar_mult_matrix(long long int s, Matrix *M)
     return A;
 }
 
-// Q5: write code here to find the transpose of given matrix A and return a new matrix with the results.
+// AQ5: write code here to find the transpose of given matrix A and return a new matrix with the results.
 Matrix *transpose_matrix(Matrix *A)
 {
     Matrix *R = create_matrix(A->num_cols, A->num_rows);
@@ -104,7 +97,7 @@ Matrix *transpose_matrix(Matrix *A)
     return R;
 }
 
-// For Q6: Code to create a sub-matrix from a given matrixx by deleting a particular row and col
+// For AQ6: Code to create a sub-matrix from a given matrixx by deleting a particular row and col
 Matrix *create_submatrix(Matrix *M, int removed_row, int removed_col) 
 {
     Matrix *sub = create_matrix((M->num_rows - 1), (M->num_cols) - 1);
@@ -133,7 +126,7 @@ Matrix *create_submatrix(Matrix *M, int removed_row, int removed_col)
     return sub;
 }
 
-// Q6: Code to calculate the determinant of the given matrix M
+// AQ6: Code to calculate the determinant of the given matrix M
 long long int determinant(Matrix *M)
 {
     if(M->num_cols != M->num_rows)
@@ -173,4 +166,36 @@ void print_matrix(Matrix *m)
         }
         printf("\n");
     }
+}
+
+Matrix * read_matrix_from_file(char *name)
+{
+    char buffer[100], **check;   
+    FILE *fptr = fopen(name, "r");
+    if(fptr == NULL)
+    {
+        //printf("ERROR: INVALID ARGUMENT");
+        return NULL;
+    }
+    long long int r, c;
+
+    if(fscanf(fptr, "%s", buffer) == 1)
+    {
+        r = strtoll(buffer, check, 10);
+    }
+    if(fscanf(fptr, "%s", buffer) == 1)
+    {
+        c = strtoll(buffer, check, 10);
+    }
+    Matrix *A = create_matrix(r, c);
+    for(int i = 0; i < r; i++)
+    {
+        for (int j = 0; j < c; j++)
+        {
+            fscanf(fptr, "%s", buffer);
+            A->data[i][j] = strtoll(buffer, check, 10);
+        }    
+    }
+    fclose(fptr);
+    return A;
 }
