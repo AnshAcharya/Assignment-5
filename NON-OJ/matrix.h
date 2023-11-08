@@ -1,7 +1,12 @@
-#ifndef MATRIX_H
-#define MATRIX_H
+// #ifndef MATRIX_H
+// #define MATRIX_H
 
-typedef struct Matrix Matrix; // Given
+typedef struct Matrix // Given
+{
+    int num_rows;
+    int num_cols;
+    long long int **data;
+} Matrix;
 
 Matrix *create_matrix(int r, int c); // Given
 
@@ -21,4 +26,4 @@ Matrix *create_submatrix(Matrix *M, int removed_row, int removed_col); // For qu
 
 void print_matrix(Matrix *m);
 
-#endif
+// #endif
