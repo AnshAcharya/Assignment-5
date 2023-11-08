@@ -9,7 +9,7 @@ void solve(int q, Matrix *M[q])
 {
     for (int v = 0; v < q; v++)
     {
-        flag = 0; 
+        flag = 0;
         char str[20];
         int n;
         scanf("%s %d", str, &n);
@@ -24,7 +24,7 @@ void solve(int q, Matrix *M[q])
                 {
                     for (int j = 0; j < c1; j++)
                     {
-                        scanf("%lld ", &(A->data[i][j])); 
+                        scanf("%lld ", &(A->data[i][j]));
                     }
                 }
                 int r2, c2;
@@ -34,7 +34,7 @@ void solve(int q, Matrix *M[q])
                 {
                     for (int j = 0; j < c2; j++)
                     {
-                        scanf("%lld ", &(B->data[i][j])); 
+                        scanf("%lld ", &(B->data[i][j]));
                     }
                 }
                 if (r1 != r2 || c1 != c2)
@@ -48,7 +48,7 @@ void solve(int q, Matrix *M[q])
                 destroy_matrix(A);
                 destroy_matrix(B);
             }
-            else if (strcmp(str, "mult_matrix") == 0) 
+            else if (strcmp(str, "mult_matrix") == 0)
             {
                 int r1, c1;
                 scanf("%d %d", &r1, &c1);
@@ -57,7 +57,7 @@ void solve(int q, Matrix *M[q])
                 {
                     for (int j = 0; j < c1; j++)
                     {
-                        scanf("%lld ", &(A->data[i][j])); 
+                        scanf("%lld ", &(A->data[i][j]));
                     }
                 }
                 int r2, c2;
@@ -67,24 +67,19 @@ void solve(int q, Matrix *M[q])
                 {
                     for (int j = 0; j < c2; j++)
                     {
-                        scanf("%lld ", &(B->data[i][j])); 
+                        scanf("%lld ", &(B->data[i][j]));
                     }
                 }
-                if (r1 != r2 || c1 != c2)
-                {
-                    M[v] = NULL;
-                }
-                else
-                {
-                    M[v] = mult_matrix(A, B);
-                }
+
+                M[v] = mult_matrix(A, B);
+
                 destroy_matrix(A);
                 destroy_matrix(B);
             }
-            else if (strcmp(str, "scalar_mult_matrix") == 0) 
+            else if (strcmp(str, "scalar_mult_matrix") == 0)
             {
                 long long s;
-                scanf("%lld", &s); 
+                scanf("%lld", &s);
                 int r1, c1;
                 scanf("%d %d", &r1, &c1);
                 Matrix *A = create_matrix(r1, c1);
@@ -92,13 +87,13 @@ void solve(int q, Matrix *M[q])
                 {
                     for (int j = 0; j < c1; j++)
                     {
-                        scanf("%lld ", &(A->data[i][j])); 
+                        scanf("%lld ", &(A->data[i][j]));
                     }
                 }
                 M[v] = scalar_mult_matrix(s, A);
                 destroy_matrix(A);
             }
-            else if (strcmp(str, "transpose_matrix") == 0) 
+            else if (strcmp(str, "transpose_matrix") == 0)
             {
                 int r1, c1;
                 scanf("%d %d", &r1, &c1);
@@ -107,13 +102,13 @@ void solve(int q, Matrix *M[q])
                 {
                     for (int j = 0; j < c1; j++)
                     {
-                        scanf("%lld ", &(A->data[i][j])); 
+                        scanf("%lld ", &(A->data[i][j]));
                     }
                 }
                 M[v] = transpose_matrix(A);
                 destroy_matrix(A);
             }
-            else if (strcmp(str, "determinant") == 0) 
+            else if (strcmp(str, "determinant") == 0)
             {
                 flag = 1;
                 int r1, c1;
@@ -123,12 +118,45 @@ void solve(int q, Matrix *M[q])
                 {
                     for (int j = 0; j < c1; j++)
                     {
-                        scanf("%lld ", &(A->data[i][j])); 
+                        scanf("%lld ", &(A->data[i][j]));
                     }
                 }
-                M[v] = create_matrix(1, 1); 
+                M[v] = create_matrix(1, 1);
                 M[v]->data[0][0] = determinant(A);
                 destroy_matrix(A);
+            }
+        }
+        else if (n == 1)
+        {
+            if (strcmp(str, "add_matrix") == 0)
+            {
+                char *str1, *str2;
+                scanf("%s\n%s", str1, str2);
+                Matrix *A = read_matrix_from_file(str1);
+                Matrix *B = read_matrix_from_file(str2);
+                M[v] = add_matrix(A, B);
+                destroy_matrix(A);
+                destroy_matrix(B);
+            }
+            else if (strcmp(str, "mult_matrix") == 0)
+            {
+                char *str1, *str2;
+                scanf("%s\n%s", str1, str2);
+                Matrix *A = read_matrix_from_file(str1);
+                Matrix *B = read_matrix_from_file(str2);
+                M[v] = mult_matrix(A, B);
+                destroy_matrix(A);
+                destroy_matrix(B);
+            }
+            else if (strcmp(str, "scaler_mult_matrix") == 0)
+            {
+                char *str1, *str2;
+                scanf("%s\n%s", str1, str2);
+                Matrix *A = read_matrix_from_file(str1);
+                Matrix *B = read_matrix_from_file(str2);
+                M[v] = add_matrix(A, B);
+                destroy_matrix(A);
+                destroy_matrix(B);
             }
         }
     }
@@ -146,7 +174,7 @@ int main()
     {
         if (M[i] == NULL)
         {
-            printf("ERROR: INVALID ARGUMENT\n"); 
+            printf("ERROR: INVALID ARGUMENT\n");
         }
         else
         {
@@ -158,7 +186,7 @@ int main()
                 }
                 else
                 {
-                    printf("%lld\n", M[i]->data[0][0]); 
+                    printf("%lld\n", M[i]->data[0][0]);
                 }
             }
             else

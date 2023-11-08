@@ -1,5 +1,3 @@
-// #ifndef MATRIX_H
-// #define MATRIX_H
 
 typedef struct Matrix // Given
 {
@@ -10,20 +8,21 @@ typedef struct Matrix // Given
 
 Matrix *create_matrix(int r, int c); // Given
 
-void destroy_matrix(Matrix *m); // Q1
+void destroy_matrix(Matrix *m); // AQ1
 
-Matrix *add_matrix(Matrix *A, Matrix *B);// Q2
+Matrix *add_matrix(Matrix *A, Matrix *B);// AQ2
 
-Matrix *mult_matrix(Matrix *A, Matrix *B);// Q3
+Matrix *mult_matrix(Matrix *A, Matrix *B);// AQ3
 
-Matrix *scalar_mult_matrix(long long int s, Matrix *M);// Q4
+Matrix *scalar_mult_matrix(long long int s, Matrix *M);// AQ4
 
-Matrix *transpose_matrix(Matrix *A); // Q5
+Matrix *transpose_matrix(Matrix *A); // AQ5
 
-long long int determinant(Matrix *M); //Q6
+long long int determinant(Matrix *M); //AQ6
 
-Matrix *create_submatrix(Matrix *M, int removed_row, int removed_col); // For question 6
+Matrix *create_submatrix(Matrix *M, int removed_row, int removed_col); // For AQuestion 6
 
 void print_matrix(Matrix *m);
 
-// #endif
+Matrix * read_matrix_from_file(char *name);
+

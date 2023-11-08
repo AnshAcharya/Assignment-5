@@ -47,8 +47,9 @@ Matrix *add_matrix(Matrix *A, Matrix *B)
 // AQ3: Code to multiply the matrices A and B and return a new matrix with the results.
 Matrix *mult_matrix(Matrix *A, Matrix *B)
 {
-    if (A->num_cols != B->num_rows)
+    if (A->num_cols != B->num_rows )
     {
+        printf("hello");
         return NULL;
     }
 
@@ -59,7 +60,7 @@ Matrix *mult_matrix(Matrix *A, Matrix *B)
         for (int j = 0; j < R->num_cols; j++)
         {
             R->data[i][j] = 0;
-            for (int k = 0; k < R->num_cols; k++)
+            for (int k = 0; k < A->num_cols; k++)
             {
                 R->data[i][j] += A->data[i][k] * B->data[k][j];
             }
