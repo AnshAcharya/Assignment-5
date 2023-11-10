@@ -2,26 +2,23 @@
 #include <string.h>
 #include <stdlib.h>
 
-void swap(char *a, char *b)
+void reverse(char *name)
 {
-    char temp;
-    temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
-char *reverse(char *str)
-{
-    int n = strlen(str);
+    int n = strlen(name);
     for (int i = 0; i < n / 2; i++)
     {
-        swap(&str[i], &str[n - i - 1]);
+        char temp = name[i];
+        name[i] = name[n - i - 1];
+        name[n - i - 1] = temp;
     }
-    return str;
 }
 
-void name_the_dog(char *name, int n)
+int main()
 {
+    char name[(int)4e5 + 1];
+    scanf("%s", name);
+    int n;
+    scanf("%d", &n);
     for (int i = 0; i < n; i++)
     {
         int q;
@@ -33,9 +30,9 @@ void name_the_dog(char *name, int n)
         else
         {
             int l;
-            char j[2];
+            char j[(int)(4e5 + 1)];
             scanf("%d %s", &l, j);
-            if(l == 1)
+            if (l == 1)
             {
                 strcat(j, name);
                 strcpy(name, j);
@@ -46,15 +43,6 @@ void name_the_dog(char *name, int n)
             }
         }
     }
-}
-
-int main()
-{
-    char name[(int)1e5 + 1];
-    scanf("%s", name);
-    int n;
-    scanf("%d", &n);
-    name_the_dog(name, n);
     printf("%s\n", name);
     return 0;
 }
