@@ -5,19 +5,19 @@
 void reverse(char *name)
 {
     int n = strlen(name);
-    for (int i = 0; i < n / 2; i++)
+    for (int i = 0, j = n - 1; i < n / 2 && j >= n / 2; i++, j--)
     {
-        char temp = name[i];
-        name[i] = name[n - i - 1];
-        name[n - i - 1] = temp;
+        name[i] = name[i] ^ name[j];
+        name[j] = name[i] ^ name[j];
+        name[i] = name[i] ^ name[j];
     }
 }
 
 int main()
 {
-    char name[(int)4e5 + 1];
+    char *name = (char *)malloc(((int)(4e5 + 1)) * sizeof(char));
     scanf("%s", name);
-    int n;
+    int n, cnt = 0;
     scanf("%d", &n);
     for (int i = 0; i < n; i++)
     {
@@ -25,14 +25,14 @@ int main()
         scanf("%d", &q);
         if (q == 1)
         {
-            reverse(name);
+            cnt++;
         }
         else
         {
             int l;
-            char j[(int)(4e5 + 1)];
+            char *j = (char *)malloc(((int)(4e5 + 1)) * sizeof(char));
             scanf("%d %s", &l, j);
-            if (l == 1)
+            if (((l == 1) && (cnt % 2 == 0)) || ((l == 2) && (cnt % 2 == 1)))
             {
                 strcat(j, name);
                 strcpy(name, j);
@@ -41,8 +41,14 @@ int main()
             {
                 strcat(name, j);
             }
+            free(j);
         }
     }
+    if (cnt % 2 == 1)
+    {
+        reverse(name);
+    }
     printf("%s\n", name);
+    free(name);
     return 0;
 }
