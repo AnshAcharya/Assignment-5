@@ -47,7 +47,7 @@ Matrix *add_matrix(Matrix *A, Matrix *B)
 // AQ3: Code to multiply the matrices A and B and return a new matrix with the results.
 Matrix *mult_matrix(Matrix *A, Matrix *B)
 {
-    if (A->num_cols != B->num_rows )
+    if (A->num_cols != B->num_rows)
     {
         printf("hello");
         return NULL;
@@ -99,14 +99,14 @@ Matrix *transpose_matrix(Matrix *A)
 }
 
 // For AQ6: Code to create a sub-matrix from a given matrixx by deleting a particular row and col
-Matrix *create_submatrix(Matrix *M, int removed_row, int removed_col) 
+Matrix *create_submatrix(Matrix *M, int removed_row, int removed_col)
 {
     Matrix *sub = create_matrix((M->num_rows - 1), (M->num_cols) - 1);
 
     int r = 0;
     for (int i = 0; i < M->num_rows; i++)
     {
-        if(i == removed_row)
+        if (i == removed_row)
         {
             continue;
         }
@@ -114,31 +114,31 @@ Matrix *create_submatrix(Matrix *M, int removed_row, int removed_col)
         int c = 0;
         for (int j = 0; j < M->num_cols; j++)
         {
-            if(i == removed_col)
+            if (i == removed_col)
             {
                 continue;
             }
             sub->data[r][c] = M->data[i][j];
             c++;
         }
-        r++;        
+        r++;
     }
-    
+
     return sub;
 }
 
 // AQ6: Code to calculate the determinant of the given matrix M
 long long int determinant(Matrix *M)
 {
-    if(M->num_cols != M->num_rows)
+    if (M->num_cols != M->num_rows)
     {
         return -1;
     }
-    if(M->num_cols == 1 && M->num_rows == 1)
+    if (M->num_cols == 1 && M->num_rows == 1)
     {
         return M->data[0][0];
     }
-    if(M->num_cols == 2 && M->num_rows == 2)
+    if (M->num_cols == 2 && M->num_rows == 2)
     {
         return ((M->data[0][0]) * (M->data[1][1])) - ((M->data[0][1]) * (M->data[1][0]));
     }
@@ -169,34 +169,53 @@ void print_matrix(Matrix *m)
     }
 }
 
-Matrix * read_matrix_from_file(char *name)
+Matrix *read_matrix_from_file(char *name)
 {
-    char buffer[100], **check;   
+    char buffer[100], **check;
     FILE *fptr = fopen(name, "r");
-    if(fptr == NULL)
+    if (fptr == NULL)
     {
-        //printf("ERROR: INVALID ARGUMENT");
+        // printf("ERROR: INVALID ARGUMENT");
         return NULL;
     }
     long long int r, c;
 
-    if(fscanf(fptr, "%s", buffer) == 1)
+    if (fscanf(fptr, "%s", buffer) == 1)
     {
         r = strtoll(buffer, check, 10);
     }
-    if(fscanf(fptr, "%s", buffer) == 1)
+    if (fscanf(fptr, "%s", buffer) == 1)
     {
         c = strtoll(buffer, check, 10);
     }
     Matrix *A = create_matrix(r, c);
-    for(int i = 0; i < r; i++)
+    for (int i = 0; i < r; i++)
     {
         for (int j = 0; j < c; j++)
         {
             fscanf(fptr, "%s", buffer);
             A->data[i][j] = strtoll(buffer, check, 10);
-        }    
+        }
     }
     fclose(fptr);
     return A;
+}
+
+void write_matrix_to_file(char *name, Matrix A)
+{
+    FILE *fptr = fopen(name, "w");
+    if (fptr == NULL)
+    {
+        printf("ERROR: INVALID ARGUMENT");
+    }
+    fprintf(fptr, "%d %d\n", A.num_rows, A.num_cols);
+    for (int i = 0; i < A.num_rows; i++)
+    {
+        for (int j = 0; j < A.num_cols; j++)
+        {
+            fprintf(fptr, "%lld ", A.data[i][j]);
+        }
+        fprintf(fptr, "\n");
+    }
+    fclose(fptr);
 }

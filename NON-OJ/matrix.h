@@ -26,3 +26,4 @@ void print_matrix(Matrix *m);
 
 Matrix * read_matrix_from_file(char *name);
 
+void write_matrix_to_file(char *name, Matrix A);

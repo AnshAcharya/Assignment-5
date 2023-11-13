@@ -4,8 +4,9 @@
 // #include "matrix.c"
 
 int flag = 0;
+int n_is = 0;
 
-void solve(int q, Matrix *M[q])
+void solve(int q)
 {
     for (int v = 0; v < q; v++)
     {
@@ -15,6 +16,7 @@ void solve(int q, Matrix *M[q])
         scanf("%s %d", str, &n);
         if (n == 0)
         {
+            n_is = 0;
             if (strcmp(str, "add_matrix") == 0)
             {
                 int r1, c1;
@@ -37,14 +39,7 @@ void solve(int q, Matrix *M[q])
                         scanf("%lld ", &(B->data[i][j]));
                     }
                 }
-                if (r1 != r2 || c1 != c2)
-                {
-                    M[v] = NULL;
-                }
-                else
-                {
-                    M[v] = add_matrix(A, B);
-                }
+                print_matrix(add_matrix(A, B));
                 destroy_matrix(A);
                 destroy_matrix(B);
             }
@@ -71,7 +66,7 @@ void solve(int q, Matrix *M[q])
                     }
                 }
 
-                M[v] = mult_matrix(A, B);
+                print_matrix(mult_matrix(A, B));
 
                 destroy_matrix(A);
                 destroy_matrix(B);
@@ -90,7 +85,7 @@ void solve(int q, Matrix *M[q])
                         scanf("%lld ", &(A->data[i][j]));
                     }
                 }
-                M[v] = scalar_mult_matrix(s, A);
+                print_matrix(scalar_mult_matrix(s, A));
                 destroy_matrix(A);
             }
             else if (strcmp(str, "transpose_matrix") == 0)
@@ -105,7 +100,7 @@ void solve(int q, Matrix *M[q])
                         scanf("%lld ", &(A->data[i][j]));
                     }
                 }
-                M[v] = transpose_matrix(A);
+                print_matrix(transpose_matrix(A));
                 destroy_matrix(A);
             }
             else if (strcmp(str, "determinant") == 0)
@@ -121,8 +116,15 @@ void solve(int q, Matrix *M[q])
                         scanf("%lld ", &(A->data[i][j]));
                     }
                 }
-                M[v] = create_matrix(1, 1);
-                M[v]->data[0][0] = determinant(A);
+                long long int det = determinant(A);
+                if (det == -1)
+                {
+                    printf("ERROR: INVALID ARGUMENT\n");
+                }
+                else
+                {
+                    printf("%lld\n", det);
+                }
                 destroy_matrix(A);
             }
         }
@@ -130,33 +132,98 @@ void solve(int q, Matrix *M[q])
         {
             if (strcmp(str, "add_matrix") == 0)
             {
-                char *str1, *str2;
-                scanf("%s\n%s", str1, str2);
-                Matrix *A = read_matrix_from_file(str1);
-                Matrix *B = read_matrix_from_file(str2);
-                M[v] = add_matrix(A, B);
-                destroy_matrix(A);
-                destroy_matrix(B);
+                char *in1 = (char *)malloc(50);
+                char *in2 = (char *)malloc(50);
+                char *out = (char *)malloc(50);
+                scanf("%s", in1);
+                scanf("%s", in2);
+                scanf("%s", out);
+                Matrix *A = read_matrix_from_file(in1);
+                Matrix *B = read_matrix_from_file(in2);
+                Matrix *result = add_matrix(A, B);
+                if (result == NULL)
+                {
+                    printf("ERROR: INVALID ARGUMENT");
+                    continue;
+                }
+                else
+                {
+                    write_matrix_to_file(out, *result);
+
+                    destroy_matrix(A);
+                    destroy_matrix(B);
+                    destroy_matrix(result);
+
+                    free(in1);
+                    free(in2);
+                    free(out);
+                }
             }
             else if (strcmp(str, "mult_matrix") == 0)
             {
-                char *str1, *str2;
-                scanf("%s\n%s", str1, str2);
-                Matrix *A = read_matrix_from_file(str1);
-                Matrix *B = read_matrix_from_file(str2);
-                M[v] = mult_matrix(A, B);
-                destroy_matrix(A);
-                destroy_matrix(B);
+                char *in1 = (char *)malloc(50);
+                char *in2 = (char *)malloc(50);
+                char *out = (char *)malloc(50);
+                scanf("%s", in1);
+                scanf("%s", in2);
+                scanf("%s", out);
+                Matrix *A = read_matrix_from_file(in1);
+                Matrix *B = read_matrix_from_file(in2);
+                Matrix *result = mult_matrix(A, B);
+                if (result == NULL)
+                {
+                    printf("ERROR: INVALID ARGUMENT");
+                    continue;
+                }
+                else
+                {
+                    write_matrix_to_file(out, *result);
+
+                    destroy_matrix(A);
+                    destroy_matrix(B);
+                    destroy_matrix(result);
+
+                    free(in1);
+                    free(in2);
+                    free(out);
+                }
             }
             else if (strcmp(str, "scaler_mult_matrix") == 0)
             {
-                char *str1, *str2;
-                scanf("%s\n%s", str1, str2);
-                Matrix *A = read_matrix_from_file(str1);
-                Matrix *B = read_matrix_from_file(str2);
-                M[v] = add_matrix(A, B);
+                char *in = (char *)malloc(50), *out = (char *)malloc(50);
+                long long int s;
+                scanf("%lld", &s);
+                scanf("%s", in);
+                scanf("%s", out);
+                Matrix *A = read_matrix_from_file(in);
+                write_matrix_to_file(out, *scalar_mult_matrix(s, A));
                 destroy_matrix(A);
-                destroy_matrix(B);
+                free(in);
+                free(out);
+            }
+            else if (strcmp(str, "determinant") == 0)
+            {
+                char *in;
+                scanf("%s", in);
+                Matrix *A = read_matrix_from_file(in);
+                long long int det = determinant(A);
+                if (det == -1)
+                {
+                    printf("ERROR: INVALID ARGUMENT\n");
+                }
+                else
+                {
+                    printf("%lld\n", det);
+                }
+                destroy_matrix(A);
+            }
+            else if (strcmp(str, "transpose_matrix") == 0)
+            {
+                char *in, *out;
+                scanf("%s\n%s", in, out);
+                Matrix *A = read_matrix_from_file(in);
+                write_matrix_to_file(out, *A);
+                destroy_matrix(A);
             }
         }
     }
@@ -166,36 +233,6 @@ int main()
 {
     int q;
     scanf("%d", &q);
-    Matrix *M[q];
-
-    solve(q, M);
-
-    for (int i = 0; i < q; i++)
-    {
-        if (M[i] == NULL)
-        {
-            printf("ERROR: INVALID ARGUMENT\n");
-        }
-        else
-        {
-            if (flag == 1)
-            {
-                if (M[i]->data[0][0] == -1)
-                {
-                    printf("ERROR: INVALID ARGUMENT\n");
-                }
-                else
-                {
-                    printf("%lld\n", M[i]->data[0][0]);
-                }
-            }
-            else
-            {
-                print_matrix(M[i]);
-                destroy_matrix(M[i]);
-            }
-        }
-    }
-
+    solve(q);
     return 0;
 }
